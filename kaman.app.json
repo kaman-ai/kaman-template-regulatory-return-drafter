@@ -1,0 +1,60 @@
+{
+  "name": "Regulatory Return Drafter",
+  "agents": {
+    "ledger_analyst": "ff0d6698-b206-56dc-93cc-7e976ce87763",
+    "rules_reader": "6c1ff89b-3c97-5300-ad51-ab9f7113b39b",
+    "filer": "7d4b6cf0-c355-5fd9-85b4-dccf56e0145e"
+  },
+  "workflows": {
+    "flow": "2781c860-9891-5cd0-a2c0-8386131158a4"
+  },
+  "ui": {
+    "title": "Regulatory Return Drafter",
+    "tagline": "Drafts a periodic regulatory return from the ledger and the regulator's own instructions, checks every line against last period and the validation rules, and files it as a draft only after the compliance officer signs off.",
+    "actions": [
+      {
+        "id": "run",
+        "label": "Run: Regulatory return drafting",
+        "description": "For a reporting period, Kaman pulls the ledger balances and the regulator's instructions in parallel, drafts the return, checks it against last period and the validation rules, and puts it in front of the compliance officer before filing it as a draft.",
+        "kind": "workflow",
+        "target": "flow",
+        "inputs": [
+          {
+            "name": "period",
+            "label": "Period",
+            "kind": "text",
+            "default": "2026-09"
+          },
+          {
+            "name": "return_code",
+            "label": "Return code",
+            "kind": "text",
+            "default": "LIQ-01"
+          },
+          {
+            "name": "entity",
+            "label": "Entity",
+            "kind": "text",
+            "default": "Main bank entity"
+          }
+        ]
+      },
+      {
+        "id": "ask",
+        "label": "Ask the Ledger Analyst",
+        "description": "Pulls the period's balances and last period's filing from the warehouse.",
+        "kind": "agent",
+        "target": "ledger_analyst",
+        "prompt": "{{question}}",
+        "inputs": [
+          {
+            "name": "question",
+            "label": "Your question",
+            "kind": "text",
+            "default": "Pull the trial balance for 2026-09 and last period's LIQ-01 filing."
+          }
+        ]
+      }
+    ]
+  }
+}
