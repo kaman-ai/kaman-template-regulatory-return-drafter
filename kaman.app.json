@@ -1,60 +1,27 @@
 {
   "name": "Regulatory Return Drafter",
   "agents": {
-    "ledger_analyst": "ff0d6698-b206-56dc-93cc-7e976ce87763",
-    "rules_reader": "6c1ff89b-3c97-5300-ad51-ab9f7113b39b",
-    "filer": "7d4b6cf0-c355-5fd9-85b4-dccf56e0145e"
+    "ledger_analyst": "9cf8f908-30ed-5d80-b399-eb5c81e44f55",
+    "rules_reader": "d7b0bbe1-47c2-5fb1-8df5-4b454cc54083",
+    "filer": "029989fa-a526-5ca9-a40b-551ddba1c419"
   },
   "workflows": {
-    "flow": "2781c860-9891-5cd0-a2c0-8386131158a4"
+    "flow": "258af0b4-70fe-57a8-8a19-20c7ceb3cfed"
+  },
+  "scenarios": {
+    "desk": "dd63b805-3ba5-5461-8616-ba223236649a"
   },
   "ui": {
     "title": "Regulatory Return Drafter",
     "tagline": "Drafts a periodic regulatory return from the ledger and the regulator's own instructions, checks every line against last period and the validation rules, and files it as a draft only after the compliance officer signs off.",
-    "actions": [
-      {
-        "id": "run",
-        "label": "Run: Regulatory return drafting",
-        "description": "For a reporting period, Kaman pulls the ledger balances and the regulator's instructions in parallel, drafts the return, checks it against last period and the validation rules, and puts it in front of the compliance officer before filing it as a draft.",
-        "kind": "workflow",
-        "target": "flow",
-        "inputs": [
-          {
-            "name": "period",
-            "label": "Period",
-            "kind": "text",
-            "default": "2026-09"
-          },
-          {
-            "name": "return_code",
-            "label": "Return code",
-            "kind": "text",
-            "default": "LIQ-01"
-          },
-          {
-            "name": "entity",
-            "label": "Entity",
-            "kind": "text",
-            "default": "Main bank entity"
-          }
-        ]
-      },
-      {
-        "id": "ask",
-        "label": "Ask the Ledger Analyst",
-        "description": "Pulls the period's balances and last period's filing from the warehouse.",
-        "kind": "agent",
-        "target": "ledger_analyst",
-        "prompt": "{{question}}",
-        "inputs": [
-          {
-            "name": "question",
-            "label": "Your question",
-            "kind": "text",
-            "default": "Pull the trial balance for 2026-09 and last period's LIQ-01 filing."
-          }
-        ]
-      }
-    ]
+    "run": "Run: Regulatory return drafting",
+    "chat": {
+      "agent": "ledger_analyst",
+      "title": "Ask the Ledger Analyst",
+      "suggestions": [
+        "Pull figures for return LIQ-01, period 2026-09. The trial_balance query returned {cash: 1200000, hqla_l1: 5400000, deposits_retail: 9100000}. the filed_return_line query for 2026-08 returned {L1: 5100000, L2: 8800000}. Reply as instructed.",
+        "Pull the trial balance for 2026-09 and last period's LIQ-01 filing."
+      ]
+    }
   }
 }
